@@ -18,10 +18,12 @@
 //You should have received a copy of the GNU General Public License
 //along with this program.If not, see<http://www.gnu.org/licenses/>.
 //END LICENSE BLOCK 
-import { FormField } from "./form-field.model";
-
-export class AssessmentForm {
-    formId: string;
-    fields: FormField[];
-    relatedForms: string;
-}
+export class Encounter {
+    person_id: string;
+    encounter_id: string;
+    admitdatetime: Date;
+    dischargedatetime: Date;
+    displaytext: string;
+    patientclasscode: string;
+    episodestatuscode: string;
+  }

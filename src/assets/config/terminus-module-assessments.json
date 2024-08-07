@@ -18,26 +18,31 @@
     "latestBmiUri": "SYNAPSE_DYNAMIC_URI/GetBaseViewListObjectByAttribute/bvassessment_latestbmi/person_id/",
     "latestCancerRecordUri": "SYNAPSE_DYNAMIC_URI/GetBaseViewListObjectByAttribute/bvassessment_latestcancerrecord/person_id/",
     "latestVteHistoryUri": "SYNAPSE_DYNAMIC_URI/GetBaseViewListObjectByAttribute/bvassessment_latestvtehistory/person_id/",
-    "currentPatientAgeUri": "SYNAPSE_DYNAMIC_URI/GetBaseViewListObjectByAttribute/bvassessment_currentpatientage/person_id/"
+    "currentPatientAgeUri": "SYNAPSE_DYNAMIC_URI/GetBaseViewListObjectByAttribute/bvassessment_currentpatientage/person_id/",
+    "latestAssessmentResponse": "SYNAPSE_DYNAMIC_URI/GetBaseViewListByPost/bvassessment_latestformresponse"
   },
   "siteSettings": {
     "pdfCssUrl": "https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css",
     "noOfRecordsToDisplay": 100,
-    "formIds": "'ff09f5bd-67ed-4be2-30c1-9e8be4bfcb9b', '6a898df4-b11a-399a-07e6-883d823cb4b2', '032fcd09-6979-14f8-4a80-91cb1a94390d'",
+    "formIds": "'051b40d1-c873-9ba4-b25d-ce9663dc91ee', '24add288-6e6b-baa9-97d6-eb472c96dd28','e8b4c163-bf5f-fbaa-7f66-139b026f9e76', '032fcd09-6979-14f8-4a80-91cb1a94390d'",
     "formAddEditRole": "",
     "prodbuild": true
   },
   "assessmentForms": [
     {
-      "formId": "6a898df4-b11a-399a-07e6-883d823cb4b2",
-      "fields": [
-        {
-          "fieldId": "latestPlateletCount",
-          "dataUrl": "",
-          "attributeName": "person_id",
-          "propertyName": "observationvaluenumeric"
-        }
-      ]
+      "formId": "24add288-6e6b-baa9-97d6-eb472c96dd28",
+      "formName": "Initial VTE Risk Assessment Form",
+      "relatedForms": "'24add288-6e6b-baa9-97d6-eb472c96dd28', '032fcd09-6979-14f8-4a80-91cb1a94390d'"
+    },
+    {
+      "formId": "e8b4c163-bf5f-fbaa-7f66-139b026f9e76",
+      "formName": "Adolescents VTE form (aged 12 to 17 yrs)",
+      "relatedForms": "'e8b4c163-bf5f-fbaa-7f66-139b026f9e76'"
+    },
+    {
+      "formId": "032fcd09-6979-14f8-4a80-91cb1a94390d",
+      "formName": "VTE Reassessment Form",
+      "relatedForms": "'24add288-6e6b-baa9-97d6-eb472c96dd28', '032fcd09-6979-14f8-4a80-91cb1a94390d'"
     }
   ]
 }

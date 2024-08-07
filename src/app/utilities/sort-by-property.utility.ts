@@ -1,7 +1,7 @@
 //BEGIN LICENSE BLOCK 
 //Interneuron Terminus
 
-//Copyright(C) 2023  Interneuron Holdings Ltd
+//Copyright(C) 2024  Interneuron Limited
 
 //This program is free software: you can redistribute it and/or modify
 //it under the terms of the GNU General Public License as published by
@@ -23,3 +23,16 @@ export function sortByProperty(property, sortOrder: number) {
         return ((x[property] === y[property]) ? 0 : sortOrder * ((x[property] > y[property]) ? 1 : -1));
     };
 };
+
+export function mapOrder(array, order, key) {
+  
+    array.sort(function (a, b) {
+      let A = a[key], B = b[key];
+      if (order.indexOf(A) > order.indexOf(B)) {
+        return 1;
+      } else {
+        return -1;
+      }
+    });
+    return array;
+  };

@@ -1,7 +1,7 @@
 //BEGIN LICENSE BLOCK 
 //Interneuron Terminus
 
-//Copyright(C) 2023  Interneuron Holdings Ltd
+//Copyright(C) 2024  Interneuron Limited
 
 //This program is free software: you can redistribute it and/or modify
 //it under the terms of the GNU General Public License as published by
@@ -33,7 +33,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { DatePipe } from '@angular/common';
 import { StringFilterPipe } from './pipes/string-filter.pipe';
-
+import {TableModule} from 'primeng/table';
+import { FilterService } from 'primeng/api';
+import { PrimeNGConfig } from 'primeng/api';
+import {DropdownModule} from 'primeng/dropdown';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; 
 import { ModalModule } from 'ngx-bootstrap/modal';
@@ -61,13 +64,18 @@ import { FormioHistoryService } from './formio-history-viewer/formio-history-vie
     BrowserAnimationsModule, // required animations module
     ModalModule.forRoot(),
     FormioModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    TableModule,
+    DropdownModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 
   providers: [
+    FilterService,
     DatePipe,
-    FormioHistoryService
+    FormioHistoryService,
+    PrimeNGConfig
+    
   ],
   bootstrap: [], // Build
   //bootstrap: [AppComponent],

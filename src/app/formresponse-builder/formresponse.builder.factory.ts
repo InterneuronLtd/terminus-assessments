@@ -18,37 +18,22 @@
 //You should have received a copy of the GNU General Public License
 //along with this program.If not, see<http://www.gnu.org/licenses/>.
 //END LICENSE BLOCK 
-import { Injectable } from '@angular/core';
-import { Overlay, ToastrService } from 'ngx-toastr';
-
+import { Injectable, Injector } from "@angular/core"
+import { MetaFormBuilderForm } from "../models/entities/meta-form-builder-form.model";
+import { BaseFormResponseBuilder } from "./baseformresponse.builder";
+import { RSAFormResponseBuilder } from "./RSAformresponse.builder"
 
 @Injectable({
     providedIn: 'root'
 })
-export class ToasterService {
+export class FormBuilderFactory{
 
-    constructor(private toastr: ToastrService,) { }
+    constructor(private injector: Injector){}
 
-    overlay: Overlay;
-
-    showToaster(toastrClass: string, message: string) {
-        switch (toastrClass) {
-            case "info":
-                this.toastr.info(message);
-                break;
-            case "success":
-                this.toastr.success(message);
-                break;
-            case "warning":
-                this.toastr.warning(message);
-                break;
-            case "error":
-                this.toastr.error(message);
-                break;
-            default:
-                this.toastr.success(message);
-        }
-
+    getFormBuilder(formbuilderform_id: string){
+        if(formbuilderform_id == '051b40d1-c873-9ba4-b25d-ce9663dc91ee')
+            return this.injector.get(RSAFormResponseBuilder);
+        
+        return this.injector.get(BaseFormResponseBuilder);
     }
-
 }
