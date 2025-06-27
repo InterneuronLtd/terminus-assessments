@@ -1,0 +1,119 @@
+<!--BEGIN LICENSE BLOCK--> 
+<!--Interneuron Terminus
+
+Copyright(C) 2025  Interneuron Limited
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.If not, see<http://www.gnu.org/licenses/>. -->
+<!--END LICENSE BLOCK--> 
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <!-- <form #addEditAssessmentForm2="ngForm" (ngSubmit)="onSubmit()"> -->
+
+      
+      <div class="form-row">
+        <div class="form-group col-md-4">
+          <label for="assessment-date"><b> Assessment Type:</b> {{selectedAssessment.formname}} </label>
+          <!-- <div *ngIf="assessmentDateInput.invalid && (assessmentDateInput.dirty || assessmentDateInput.touched)" class="alert alert-danger">
+                          <div *ngIf="assessmentDateInput.errors.required">
+                              Assessment date is required.
+                          </div>
+                      </div> -->
+        </div>
+      </div>
+      <div *ngIf="showAssessmentSourceControl == true" class="form-row">
+        <div class="form-group col-md-4">
+          <label for="assessment-source">Assessment Source <span class="text-danger font-weight-bold">*</span></label>
+          <select class="form-control" id="assessment-source" name="assessment-source" (change)='onSourceChange($event)'
+              [(ngModel)]="assessmentsource_id" #assessmentsourceid="ngModel" required>
+              <option value="">Please select</option>
+              <option *ngFor="let source of assessmentSource" value="{{source.assessmentsource_id}}">
+                  {{source.sourcename}}</option>
+
+          </select>
+        </div>
+      </div>
+      <div *ngIf="showOtherAssessmentSource && showAssessmentSourceControl == true" class="form-row">
+        <div class="form-group col-md-4">
+            <input class="form-control" id="otherassessmentsource" name="otherassessmentsource" type="text"
+              [(ngModel)]="otherassessmentsource" #otherassessmenttext="ngModel" required>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-4">
+          <label for="assessment-date">Date <span class="text-danger font-weight-bold">*</span></label>
+          <input class="form-control" id="assessment-date" name="assessment-date" type="text" required bsDatepicker
+            [minDate]="minDate" [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }" [(ngModel)]="assessmentDate"
+            #assessmentDateInput="ngModel">
+          <!-- <div *ngIf="assessmentDateInput.invalid && (assessmentDateInput.dirty || assessmentDateInput.touched)" class="alert alert-danger">
+                            <div *ngIf="assessmentDateInput.errors.required">
+                                Assessment date is required.
+                            </div>
+                        </div> -->
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-3">
+          <label for="start-time">Start Time <span class="text-danger font-weight-bold">*</span></label>
+          <!-- <input class="form-control" id="start-time" name="start-time" type="text" required> -->
+          <timepicker id="start-time" name="start-time" [(ngModel)]="startTime" [showMeridian]="false"></timepicker>
+          <!-- <div *ngIf="startTimeInput.invalid && (startTimeInput.dirty || startTimeInput.touched)" class="alert alert-danger">
+                            <div *ngIf="startTimeInput.errors.required">
+                                Start time is required.
+                            </div>
+                        </div> -->
+        </div>
+        <div class="form-group col-md-3">
+          <label for="end-time">End Time <span class="text-danger font-weight-bold">*</span></label>
+          <!-- <input class="form-control" id="end-time" name="end-time" type="text" required> -->
+          <timepicker id="end-time" name="end-time" [(ngModel)]="endTime" [showMeridian]="false"></timepicker>
+          <!-- <div *ngIf="endTimeInput.invalid && (endTimeInput.dirty || endTimeInput.touched)" class="alert alert-danger">
+                            <div *ngIf="endTimeInput.errors.required">
+                                End time is required.
+                            </div>
+                        </div> -->
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="row g-3 align-items-center">
+          <div class="col-auto">
+            <label for="inputPassword6" class="col-form-label">Search Assessor <span class="text-danger font-weight-bold">*</span></label>
+          </div>
+          <div class="col-auto">
+            <p-autoComplete [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}" id="searchedAssessor"
+              [(ngModel)]="searchedAssessor" [suggestions]="filteredAssessor" (completeMethod)="filterAssessor($event)"
+              field="__fullname" [minLength]="1" name="searchedAssessor"></p-autoComplete>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="row">
+          <div class="col-4">
+            <span class="text-danger">{{errorMessage}}</span>
+          </div>
+          <div class="col">
+            <button *ngIf="loading" class="btn btn-primary" type="button" disabled>
+              <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+              Saving...
+            </button>
+            <button *ngIf="!loading" type="submit" class="btn btn-primary" (click)="createform()">Save</button>
+            <button type="reset" class="btn btn-secondary ml-2" (click)="onCancel()">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

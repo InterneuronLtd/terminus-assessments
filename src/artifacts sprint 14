@@ -1,0 +1,14 @@
+Enitity changes
+
+local_disableliving_assessor
+extended_person
+core_personaddress
+
+Baseview changes
+
+bv_core_getallclients
+terminus_patientsearch
+
+List changes
+
+Sespsis Risk

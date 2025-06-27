@@ -1,0 +1,472 @@
+<!--BEGIN LICENSE BLOCK--> 
+<!--Interneuron Terminus
+
+Copyright(C) 2025  Interneuron Limited
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.If not, see<http://www.gnu.org/licenses/>. -->
+<!--END LICENSE BLOCK--> 
+<!--
+Interneuron Terminus
+Copyright(C) 2023  Interneuron Holdings Ltd
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with this program.If not, see
+<http://www.gnu.org/licenses/>
+-->
+<div *ngIf="appService.personId">
+  <div *ngIf="!showScheduler">
+    <div class="container-fluid">
+      <div class="col-md-1"></div>
+      <div class="card" *ngIf="!showForm">
+        <div class="card-header">
+          <div class="row">
+            <div class="col-md-4">
+              <!-- <h5>Assessments</h5> -->
+            </div>
+            <div class="col-md-8">
+              <!-- <div class="form-inline d-flex justify-content-center md-form form-sm mt-0">
+            <fa-icon [icon]="icons.searchIcon"></fa-icon>
+            <input class="form-control form-control-sm ml-3 w-75" type="text" placeholder="Search" aria-label="Search" 
+              [(ngModel)]="filter"/>
+          </div> -->
+              <div class="form-inline d-flex justify-content-end md-form form-sm mt-0"
+                *ngIf="(appService.authoriseAction('assessments_schedule') || appService.authoriseAction('assessments_add_edit') || appService.authoriseAction('assessments_resp_add_edit') || appService.authoriseAction('assessments_vte_add_edit'))">
+                <select class="form-control" id="ddlAssessmentTypes" name="ddlAssessmentTypes"
+                  [(ngModel)]="selectedAssessment" [ngClass]="(showerror == true)? 'validation' :'' "
+                  (change)="onAssessmentTypeChange()">
+                  <option [ngValue]="null">Please select</option>
+                  <option *ngFor="let type of fltrAssessmentTypes" [ngValue]="type">{{ type.formname }}</option>
+                </select>&nbsp;&nbsp;
+                <img title="Create Assessment" src="assets/images/addicon.svg" height="32px" width="32px"
+                  (click)="onAddAssessment()" style="cursor: pointer;" />
+              </div>
+            </div>
+          </div>
+          <!-- <div class="row">
+        <div class="col-md-12">
+          <a href="#" (click)="onSelectAll()">Select All</a> | <a href="#" (click)="onSelectNone()">Clear All</a>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col" *ngFor="let type of assessmentTypes">
+          <input type="checkbox" name="type" [id]="type.formbuilderform_id" value="{{ type.formname }}"
+            [(ngModel)]="type.checked" (change)="onCheckboxChanged()" [disabled]="type.disabled" />
+          <label [for]="type.category" class="ml-1">{{ type.formname }} ({{ type.dataCount }})</label>
+        </div>
+      </div> -->
+        </div>
+        <div class="card-body">
+          <div class="card-text">
+            <div class=table-responsive-sm *ngIf="canLoadTable">
+
+              <p-table #assessTbl stateStorage="session" stateKey="stateassessmentlist-session"
+                [value]="filteredAssessments" [lazy]="true" (onLazyLoad)="loadAssessments($event)" [paginator]="true"
+                [rows]="20" [totalRecords]="totalAssessmentCount" [rowsPerPageOptions]="[20,50]"
+                [globalFilterFields]="['formname']" styleClass="p-datatable-gridlines">
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th pSortableColumn="createddatetime">Assessment date/time <p-sortIcon
+                        field="createddatetime"></p-sortIcon></th>
+                    <th pSortableColumn="_createdby">Completed By <p-sortIcon field="_createdby"></p-sortIcon></th>
+                    <th>Assessment type
+
+                      <br />
+                      <p-columnFilter field="formname" matchMode="equals" [showMenu]="false">
+                        <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                          <p-dropdown [ngModel]="value" [options]="fltrAssessmentTypes" optionLabel="formname"
+                            (onChange)="filter($event.value)" placeholder="Any" [showClear]="true">
+
+                          </p-dropdown>
+                        </ng-template>
+                      </p-columnFilter>
+
+                    </th>
+                    <th pSortableColumn="responsestatus">Assessment Status <p-sortIcon
+                        field="responsestatus"></p-sortIcon></th>
+                    <th pSortableColumn="responseversion">Assessment Version <p-sortIcon
+                        field="responseversion"></p-sortIcon></th>
+                    <th></th>
+                  </tr>
+                </ng-template>
+                <!-- <ng-template pTemplate="header">
+              <tr>
+                  <td></td>
+                  <td></td>
+                  <td>
+                   
+                 
+                    <p-columnFilter field="formname" matchMode="equals" [showMenu]="false">
+                    
+                  </p-columnFilter>
+                  </td>
+                  <td ></td>
+                  <td></td>
+                  <td></td>
+              </tr> -->
+                <!-- </ng-template> -->
+                <ng-template pTemplate="body" let-assessment>
+                  <tr>
+                    <td *ngIf="appService.moduleConfig.Environment == 'hospital'">{{assessment.createddatetime | date:
+                      'dd/MM/yyyy HH:mm'}}</td>
+                    <td *ngIf="appService.moduleConfig.Environment == 'social_care'">{{assessment.startdatetime | date:
+                      'dd/MM/yyyy HH:mm'}}</td>
+                    <td *ngIf="appService.moduleConfig.Environment == 'hospital'">{{assessment._createdby}}</td>
+                    <td *ngIf="appService.moduleConfig.Environment == 'social_care'">{{assessment._assessorname}}</td>
+                    <td>{{assessment.formname}}</td>
+                    <td>{{ assessment.responsestatus == 'cancelled' ? 'Cancelled' : assessment.responsestatus == 'New' ?
+                      'New' : assessment.responsestatus == 'draft' ? 'Draft' : (assessment.responsestatus == 'Deleted' ?
+                      'Deleted:' : 'Completed') }} <br />
+                      {{ assessment.responsestatus == 'Deleted' ? assessment.responsestatusreason : '' }}</td>
+                    <td>{{assessment.responseversion}}</td>
+                    <td *ngIf="isLoading">
+                      <div class="spinner-grow spinner-grow-sm" role="status">
+                        <span class="sr-only">Loading...</span>
+                      </div>
+                    </td>
+                    <td *ngIf="!isLoading">
+                      <div class="row" *ngIf="assessment.responsestatus == 'New'">
+                        <div title="Start"
+                          *ngIf="(appService.authoriseAction('assessments_add_edit') || appService.authoriseAction('assessments_resp_add_edit') || appService.authoriseAction('assessments_vte_add_edit'))"
+                          class="col mt-1 mb-1 d-flex">
+                          <a href="#" (click)="GetFormResponseObject(assessment,'Edit')"
+                            class="btn btn-secondary btn-sm">
+                            <fa-icon [icon]="icons.arrowRightIcon"></fa-icon>
+                          </a>
+                        </div>
+                        <div
+                          *ngIf="(appService.authoriseAction('assessments_reschedule') || appService.authoriseAction('assessments_cancel'))"
+                          class="dropdown col mt-1 mb-1 d-flex">
+                          <img title="Reschedule Option" src="assets/images/Hamburger.svg" id="dropdownMenuButton2"
+                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" height="32px" width="32px"
+                            class="pointer" />
+
+                          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                            <span title="Reschedule" *ngIf="appService.authoriseAction('assessments_reschedule')"
+                              class="dropdown-item" (click)="GetFormResponseObject(assessment,'reschedule')"
+                              href="#">Reschedule</span>
+                            <span title="Cancel" *ngIf="appService.authoriseAction('assessments_cancel')"
+                              class="dropdown-item" (click)="GetFormResponseObject(assessment,'cancel')"
+                              href="#">Cancel</span>
+
+
+                          </div>
+                        </div>
+                        <div
+                          *ngIf="(appService.authoriseAction('assessments_add_edit') || appService.authoriseAction('assessments_resp_add_edit') || appService.authoriseAction('assessments_vte_add_edit'))"
+                          class="col mt-1 mb-1 d-flex ">
+
+                        </div>
+                      </div>
+                      <div class="row"
+                        *ngIf="assessment.responsestatus != 'New' && assessment.responsestatus != 'cancelled'">
+                        <div title="View Assessment" class="col mt-1 mb-1">
+                          <img src="assets/images/eye.svg" height="32px" width="32px"
+                            (click)="GetFormResponseObject(assessment,'View')" class="pointer"
+                            *ngIf="(appService.authoriseAction('assessments_view') || appService.authoriseAction('assessments_resp_view') || appService.authoriseAction('assessments_vte_view'))" />
+                        </div>
+                        <div title="Edit Assessment" class="col mt-1 mb-1">
+                          <img src="assets/images/amendIcon.svg" height="32px" width="32px"
+                            (click)="GetFormResponseObject(assessment,'Edit')" class="pointer"
+                            *ngIf="(appService.authoriseAction('assessments_add_edit') || appService.authoriseAction('assessments_resp_add_edit') || appService.authoriseAction('assessments_vte_add_edit')) && assessment.responsestatus != 'Deleted'" />
+                        </div>
+                        <div title="Delete Assessment" class="col mt-1 mb-1">
+                          <img src="assets/images/deleteIcon.svg" height="32px" width="32px"
+                            (click)="GetFormResponseObject(assessment,'Delete')" class="pointer"
+                            *ngIf="(appService.authoriseAction('assessments_add_edit') || appService.authoriseAction('assessments_resp_add_edit') || appService.authoriseAction('assessments_vte_add_edit')) && assessment.responsestatus != 'Deleted' && assessment._createdby == appService.loggedInUserId" />
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="paginatorleft">
+                  <p-button type="button" icon="pi pi-plus" styleClass="p-button-text"></p-button>
+                </ng-template>
+                <ng-template pTemplate="paginatorright">
+                  <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text"></p-button>
+                </ng-template>
+              </p-table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card" *ngIf="showForm">
+        <div class="card-header">
+          <div class="row">
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-text">
+            <div class="row d-print-none">
+              <div class="col">
+                <button class="btn btn-secondary w-100" (click)="onCancel(isAddEditMode)">
+                  <fa-icon [icon]="icons.arrowLeftIcon"></fa-icon> Return to module
+                </button>
+              </div>
+              <div class="col" *ngIf="!isAddEditMode && formResponse.formbuilderform_id == '7d0c118f-1b01-6881-39d4-3c5fe4a80678'">
+                <button class="btn btn-primary w-100" (click)="printOTAssessment()">
+                  <fa-icon [icon]="icons.printIcon"></fa-icon> Print
+                </button>
+              </div>
+              <div class="col" *ngIf="!isAddEditMode && formResponse.formbuilderform_id != '7d0c118f-1b01-6881-39d4-3c5fe4a80678'">
+                <button class="btn btn-primary w-100" onclick="window.print(); return false;">
+                  <fa-icon [icon]="icons.printIcon"></fa-icon> Print
+                </button>
+              </div>
+              <div class="col" *ngIf="!isAddEditMode">
+                <button class="btn btn-info float-right text-white w-100" (click)="onViewHistory()"
+                  style="margin-left: 7px; margin-right: 7px;">
+                  <fa-icon [icon]="icons.checkSquareIcon"></fa-icon> Audit
+                </button>
+              </div>
+            </div>
+            <!-- <div class="row">
+          <div class="col-md-6">
+            <div *ngIf="selectedPOA && !appService.lockedOrBlocked">
+              <div *ngIf="selectedPOA.iscompletedsocialhistory">
+                <button class="btn btn-sm btn-success btn-block text-white float-right"
+                  (click)="markSectionCompleted(false)">
+                  <fa-icon [icon]="icons.checkIcon"></fa-icon> Click here to remove Completed status
+                </button>
+              </div>
+              <div *ngIf="!selectedPOA.iscompletedsocialhistory">
+                <button class="btn btn-sm btn-danger btn-block text-white float-right" (click)="markSectionCompleted(true)">
+                  <fa-icon [icon]="icons.timesIcon"></fa-icon> Click here to show Completed status
+                </button>
+              </div>
+            </div>
+          </div>
+        </div> -->
+            <div class="row">
+              <div class="col">
+                <div class="d-flex justify-content-center mt-1">
+                  <h4>{{ formResponse.formname + (formResponse.responseversion > 0 ? (" version " +
+                    formResponse.responseversion + ".0") : "") + (formResponse.responsestatus == 'Deleted' ? ' (Deleted:
+                    ' + formResponse.responsestatusreason + ')' : '') }}</h4>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col" id="threeword">
+                <formio id="mainform" (formLoad)="FormLoadComplete($event)" [form]="generatedForm"
+                  (submit)="onSubmit($event)" (render)="onRender()" [refresh]="triggerRefresh" [options]="formOptions"
+                  [submission]="submission" (change)="onChange($event)" (customEvent)="FormCustomEvent($event)" (ready)="FormReady($event)">
+                </formio>
+                <div style="text-align: right;" class="alert-info" *ngIf="this.loadingMedia">
+                  {{mediaInfoText}}
+                </div>
+                <div *ngIf="showVersionWarning">
+                  <div class="alert alert-warning">
+                    <small>
+                      <span>This form was created using a previous version of the selected form (version:
+                        {{formResponse.formversion}}).</span>
+                      <br />
+                      <span>Current Version: {{ currentFormVersion }}</span>
+                    </small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--Modal code-->
+
+    <button type="button" hidden data-bs-toggle="modal" data-bs-target="#divPhotoMeasure" #open_pm></button>
+
+      <button type="button" hidden data-bs-toggle="modal" data-bs-target="#consent"
+      #open_consent></button>
+
+    <!-- Confirm delete modal -->
+   
+      <div *ngIf="showDeleteModel" class="modal fade bd-example-modal-lg" [config]="{backdrop: 'static',show: true,  keyboard: false}" bsModal
+    tabindex="-1" data-bs-keyboard="false" data-bs-backdrop="static" style="display: block;" role="dialog"
+    aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" >Delete Assessment</h5>
+            <button type="button" class="close" aria-label="Close" (click)="hideDeleteModal()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+           
+              <div class="form-group">
+                <label>Reason to Delete</label>
+                <input type="text" name="reasonToDelete" class="form-control"
+                  [(ngModel)]="assessmentToDelete.responsestatusreason"  maxlength="250"   [ngClass]="{ 'is-invalid': showDeleteError }"
+                 />
+                <div *ngIf="showDeleteError" class="invalid-feedback">
+                  <div *ngIf="showDeleteError">Reason to delete is required</div>
+                </div>
+              </div>
+              <div class="form-group">
+                <button type="button" (click)= "onDeleteAssessment()" class="btn btn-primary mr-1">Delete Assessment</button>
+                <button type="button" class="btn btn-secondary" (click)="hideDeleteModal()"
+                  #resetDeleteFormButton>Close</button>
+              </div>
+            
+          </div>
+          <div class="modal-footer">
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="card" *ngIf="showScheduler">
+    <div class="card-header">
+      <h4>Assessment Scheduler</h4>
+    </div>
+    <div class="card-body">
+      <app-app-assessment-scheduler [selectedAssessment]="selectedAssessment"
+        [reScheduleAsessment]="reScheduleAsessment" [client]="person"
+        (closeEvent)="onCloseForm()"></app-app-assessment-scheduler>
+    </div>
+  </div>
+
+  <div *ngIf="isPrinting">
+    <app-generate-ot-assessment-html class="pdfUseOnly" (destroyTemplate)="pdfDownloaded()"
+      [formResponse]="formResponse"></app-generate-ot-assessment-html>
+  </div>
+
+  <div id="divPhotoMeasure" class="modal fade" tabindex="-1" role="dialog"  data-bs-backdrop="static"
+  data-bs-keyboard="false" aria-hidden="true">
+    <div class="modal-dialog  modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header" style="padding: 0.5rem 1rem; background-color: #E6E6E6">
+          <h6 id="dialog-static-name" class="modal-title">Terminus - Measure</h6>
+          <button type="button" class="close pull-right" (click)="RequestPhotoMeasureOutput()" aria-label="Close"
+            data-bs-dismiss="modal">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body p-0 pt-0">
+          <app-photo-measure *ngIf="showPhotoMeasure" [actions]="photoMeasureAction" [image]="photoMeasureInput"
+            (outputimage)="OnPhotoMeasureOutput($event)"></app-photo-measure>
+        </div>
+        <div class="modal-footer d-flex justify-content-between">
+          <div class="d-flex justify-content-end">
+            <button type="button" (click)="ClosePhotoMeasure()" class="btn btn-secondary ml-2" data-bs-dismiss="modal"
+              style="display: none;" #close_pm>Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <ng-template #cancelAssessmentModal let-modal>
+    <div class="modal-body">
+      <div class="row">
+        <div class="" style="font-size:0.8em; margin-top:5px; margin-left: 50px;">
+          <strong>This will cancel the assessment appointment. Do you wish to proceed?</strong>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-md-3">
+
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <button type="button" class="form-control" style="float: right; background-color: #1F4DCC; color: white;"
+              (click)="cancelAssessments(true)">Yes</button>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <button type="button" class="form-control" style="float: right;"
+              (click)="cancelAssessments(false)">No</button>
+          </div>
+        </div>
+        <div class="col-md-3">
+
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</div>
+<div *ngIf="!appService.personId">
+  Please select a client.
+</div>
+
+
+<div id="consent"   data-bs-backdrop="static" data-bs-keyboard="false"  class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog  modal-dialog-centered modal-lg" role="document">
+     
+      <div class="modal-content">
+         <div class="modal-header" style="padding: 0.5rem 1rem; background-color: #E6E6E6">
+          <h6 id="dialog-static-name" class="modal-title">Consent</h6>
+          <button type="button" class="close pull-right" aria-label="Close" data-bs-dismiss="modal"  >
+              <span aria-hidden="true">&times;</span>
+          </button>
+           </div>
+          <div class="modal-body p-3 pt-0" style="height: 400px; overflow: auto;" *ngIf="appService.moduleConfig">
+              
+               <p>I consent to participate in a remote occupational therapy assessment conducted by an Occupational Therapist at {{appService.moduleConfig.siteSettings.orgnisationName}}</p>
+               <p>
+                  <b>Purpose and Nature of the Assessment:</b>
+                  The purpose of this remote occupational therapy assessment is to evaluate and understand my functional abilities, limitations, and challenges related to daily living activities. The assessment will be conducted through video conferencing, allowing the occupational therapist to observe and interact with me in real-time
+               </p>
+               <p>
+                <b>Procedures Involved:</b>
+                  During the assessment, the occupational therapist will conduct a series of evaluations and observations to gather information about my physical and cognitive abilities. This may include discussions about my medical history, current symptoms, and goals, as well as the administration of standardized assessments and the observation of functional tasks performed remotely. The therapist may request that I perform certain movements or activities to assess my range of motion, strength, coordination, and other relevant factors.
+               </p>
+               <p>
+                <b>Benefits and Risks:</b>
+                The benefits of this remote occupational therapy assessment may include a better understanding of my functional abilities and challenges, recommendations for strategies to improve my daily living skills, and the development of a personalized occupational therapy treatment plan. The risks associated with this assessment are minimal and may include potential limitations in assessing certain physical aspects that might be better evaluated in person.
+               </p>
+               <p>
+                <b>Confidentiality and Data Security:</b>
+                I understand that all information disclosed during the remote occupational therapy assessment will be kept strictly confidential, as required by law. The data transmitted during the assessment session will be protected to the best of our ability using secure and encrypted technology. However, I acknowledge that there may be inherent security risks associated with remote communication, and I accept these risks.
+               </p>
+               <p>
+                <b>Voluntary Participation and Right to Withdraw:</b>
+                My participation in this remote occupational therapy assessment is entirely voluntary. I understand that I have the right to withdraw my consent and discontinue participation at any time without penalty or prejudice. Additionally, I understand that the occupational therapist may also terminate the assessment if they deem it necessary or if technical issues prevent the effective conduct of the assessment.
+               </p>
+               <p>
+                <b>Professional Boundaries:</b>
+                I understand that the relationship between myself and the occupational therapist will be maintained within professional boundaries. Any form of inappropriate conduct or harassment during the assessment will not be tolerated, and I agree to engage respectfully and professionally throughout the process.
+               </p>
+               <p>
+                <b>Questions and Contact Information:</b>
+                I have had the opportunity to ask questions about the remote occupational therapy assessment and have received satisfactory answers. If I have any further questions or concerns in the future, I understand that I can contact  {{appService.moduleConfig.siteSettings.orgnisationName}} at  {{appService.moduleConfig.siteSettings.orgnisationPhone}}
+               </p>
+               <p>
+                By agreeing verbally I acknowledge that I understood the information provided in this consent form, and I willingly and voluntarily consent to participate in the remote occupational therapy assessment and have the report shared with the appropriate healthcare professionals.
+               </p>
+          </div>
+          <div class="modal-footer d-flex justify-content-between" >
+              <div class="d-flex justify-content-end">
+                  <button type="button" class="btn btn-secondary ml-2" data-bs-dismiss="modal" style="display: none;"
+                      #close_consent>Close</button>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>

@@ -1,0 +1,863 @@
+<!--BEGIN LICENSE BLOCK--> 
+<!--Interneuron Terminus
+
+Copyright(C) 2025  Interneuron Limited
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.If not, see<http://www.gnu.org/licenses/>. -->
+<!--END LICENSE BLOCK--> 
+<!doctype html>
+<html lang=en>
+
+<head>
+    <meta charset=UTF-8>
+    <meta name=viewport content="width=device-width,initial-scale=1">
+
+    <style>
+        body,
+        html {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100%;
+            padding-top: 1.2em;
+            box-sizing: border-box;
+            font-family: system-ui, serif;
+            line-height: 135%;
+            color: var(--text, #000);
+            background-color: var(--body, white)
+        }
+
+        a {
+            color: var(--link, #00e)
+        }
+
+        #footer,
+        #header,
+        #main {
+            width: 100%;
+            max-width: 40em;
+            margin: auto;
+            padding: 0 1em 0 1em;
+            box-sizing: border-box
+        }
+
+        header {
+            background: var(--header, #f3f3f3);
+            box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, .1);
+            top: 0;
+            position: fixed;
+            width: 100%;
+            min-height: 1.2em;
+            padding-top: .1em;
+            z-index: 7
+        }
+
+        #header {
+            display: flex
+        }
+
+        #nav a:first-child {
+            color: #6cc417
+        }
+
+        #nav a {
+            text-decoration: none
+        }
+
+        #spacer {
+            position: absolute;
+            left: 50%;
+            transform: translate(-50%, 0)
+        }
+
+        #spacer a {
+            color: var(--header-link, #363e68);
+            text-decoration: none
+        }
+
+        #displaymode {
+            margin-left: auto
+        }
+
+        #main {
+            flex-grow: 1;
+            background-color: var(--page, #fff);
+            padding-bottom: 3em;
+            border-radius: 10px;
+        }
+
+        footer {
+            font-size: smaller;
+            background-color: var(--footer, #aaa);
+            color: var(--footer-text, #f3f3f3);
+            padding: .5em
+        }
+
+        footer a {
+            color: var(--footer-link, #363e68);
+            text-decoration: none
+        }
+
+        footer a svg {
+            vertical-align: middle
+        }
+
+        .footer {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-evenly;
+            align-items: flex-start
+        }
+
+        .footer div {
+            margin-right: 1rem
+        }
+
+        h1 {
+            font-size: x-large
+        }
+
+        h2 {
+            font-size: larger;
+            margin-top: 2em
+        }
+
+        ul {
+            list-style-type: none;
+            margin-left: 1em;
+            padding-left: 0
+        }
+
+        li {
+            padding-bottom: .5em
+        }
+
+        .note {
+            background-color: rgba(255, 255, 0, .3);
+            margin: 1em;
+            padding: 1em;
+            box-shadow: 5px 5px 5px rgba(0, 0, 0, .5)
+        }
+
+        table {
+            margin: 1em;
+            border-radius: 5px;
+            border-collapse: collapse
+        }
+
+        table td {
+            padding: .2em
+        }
+
+        table tr:nth-child(even) {
+            background-color: hsla(0, 0%, 50%, .5)
+        }
+
+        pre {
+            overflow-x: auto;
+            background-color: hsla(0, 0%, 50%, .5);
+            padding: .5em
+        }
+
+        kbd {
+            display: inline-block;
+            margin: 0 .1em;
+            padding: .1em .6em;
+            font-family: sans-serif;
+            font-size: .75em;
+            line-height: 1;
+            color: #242729;
+            background-color: #e1e3e5;
+            border: 1px solid #adb3b9;
+            border-radius: 3px;
+            white-space: nowrap;
+            user-select: none
+        }
+
+        kbd.pressed {
+            background-color: #9c9c9c
+        }
+
+        input {
+            color: var(--text, #000);
+            background-color: hsla(0, 0%, 50%, .5);
+            border-color: hsla(0, 0%, 50%, .5)
+        }
+
+        textarea {
+            color: var(--text, #000);
+            background-color: hsla(0, 0%, 50%, .5);
+            border-color: hsla(0, 0%, 50%, .5)
+        }
+
+        button {
+            color: var(--text, #000);
+            border-color: hsla(0, 0%, 50%, .5);
+            background-color: hsla(0, 0%, 50%, .5)
+        }
+
+        button:disabled,
+        button:disabled:active,
+        button:disabled:focus,
+        button:disabled:hover {
+            color: var(--text-disabled, gray);
+            background-color: hsla(0, 0%, 50%, .5)
+        }
+
+        #feedback {
+            height: 5em;
+            background-color: hsla(0, 0%, 50%, .5);
+            padding: 1em;
+            margin: 1em;
+            overflow: auto
+        }
+
+        dialog {
+            color: var(--text);
+            background-color: var(--page);
+            border-radius: 8px;
+            border: none;
+            box-shadow: 5px 5px 5px #000
+        }
+
+        dialog::backdrop {
+            background: #000;
+            opacity: .5
+        }
+
+        button {
+            border-radius: 8px;
+            border: none;
+            padding: .4rem;
+            color: var(--linktext, #fff);
+            text-transform: uppercase
+        }
+
+        button.primary {
+            background-color: var(--link, gray)
+        }
+
+        button.primary:hover {
+            background-color: var(--link-hover, gray)
+        }
+    </style>
+    <style>
+        #container {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            background-color: var(--page, white)
+        }
+
+        #overlay {
+            pointer-events: none
+        }
+
+        #canvas {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none
+        }
+
+        #info {
+            font-family: sans-serif;
+            font-size: small;
+            color: #888
+        }
+    </style>
+    <script>
+         function ToggleInstructions() {
+                var x = document.getElementById("instructions");
+                if (x.style.display === "none") {
+                    x.style.display = "block";
+                } else {
+                    x.style.display = "none";
+                }
+            }
+
+            function FinishAndReturn() {
+                const image = canvas.toDataURL("image/jpeg");
+                if (image) {
+                    const message = new TerminusMessage(image, "photomeasureoutput");
+                    console.log("emitting image out")
+                    window.parent.postMessage(message, "*");
+                }
+            }
+    </script>
+
+</head>
+
+<body>
+    <div id=main role=main>
+        <div id=content>
+            <div id=fullscreen style=z-index:5>
+                <div id=container>
+                    <div id=toolbar style="opacity:0;transition:opacity 1s"><br>Known dimension: <input id=ref value=1
+                            style=width:3em> <button id=rccw disabled>↶ Rotate CCW</button> <button id=rcw disabled>↷
+                            Rotate CW</button> <kbd data-key=Control>CTRL</kbd><kbd data-key=Escape>ESC</kbd><kbd
+                            data-key=Delete>DEL</kbd> <button id=expand>expand <svg xmlns=http://www.w3.org/2000/svg
+                                width=12 height=12 viewBox="0 0 24 24" fill=none stroke=currentColor stroke-width=2
+                                stroke-linecap=round stroke-linejoin=round class="feather feather-maximize-2">
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <polyline points="9 21 3 21 3 15"></polyline>
+                                <line x1=21 y1=3 x2=14 y2=10></line>
+                                <line x1=3 y1=21 x2=10 y2=14></line>
+                            </svg></button></div>
+                    <div id=canvas-wrapper
+                        style="position:relative;display:flex;align-items:center;justify-content:center;min-height:20vh;border-radius:8px;background-size:4px,4px;image-rendering:optimizeSpeed">
+                        <canvas id=canvas style=width:100%;border-radius:8px;cursor:crosshair>Canvas not supported ..
+                            time to update your browser</canvas>
+                        <div id=overlay
+                            style=width:100%;height:100%;position:absolute;top:0;left:0;display:flex;align-items:center;justify-content:center>
+                            <div
+                                style="padding:1em;border:2px dashed var(--text);background:var(--page);opacity:.5;border-radius:8px">
+                                Drop image or try measuring</div>
+                        </div>
+                    </div>
+                    <div id=loadbar style=display:flex;justify-content:space-evenly;margin:1em>
+                        <div><label for=loadbutton
+                                style=display:flex;flex-wrap:wrap;justify-content:center;align-items:center;cursor:pointer><svg
+                                    xmlns=http://www.w3.org/2000/svg width=24 height=24 viewBox="0 0 24 24" fill=none
+                                    stroke=currentColor stroke-width=2 stroke-linecap=round stroke-linejoin=round
+                                    class="feather feather-image">
+                                    <rect x=3 y=3 width=18 height=18 rx=2 ry=2></rect>
+                                    <circle cx=8.5 cy=8.5 r=1.5></circle>
+                                    <polyline points="21 15 16 10 5 21"></polyline>
+                                </svg> Choose image</label> <input id=loadbutton class=loadbutton type=button
+                                value="Choose image ..." style=visibility:collapse></div>
+                    </div>
+                    <div id=infobar style="opacity:0;transition:opacity 1s">
+                        <div id=fileinfo></div>
+                        <!-- Filename:<div id=filename></div><br> -->
+                        <!-- <div id=info>x=- y=- -</div> -->
+                        <input id=save type=button value="download ..."> 
+                        <input onclick="FinishAndReturn()" type=button value="Finish and return to form"> 
+
+                    </div>
+                </div>
+            </div>
+            <div id=ad style=z-index:0></div>
+            <div id=measurements style=display:none>
+                <h2>Measurements</h2>
+                <h3>Table</h3>
+                <div id=output>No measurements yet.</div>
+                <h3>CSV</h3>
+                <p>Tab as delimiter. No warranty</p>
+                <pre><code id=outputcsv>No measurements yet</code></pre><input id=csv_copy type=button
+                    value="Copy to clipboard"> <input id=csv_save type=button value="Save as ...">
+            </div><a name=howto></a>
+            <section>
+                <div>
+                    <ol>
+                        <li>Set the scale by drawing the first line (click and drag, drag endpoints to adjust)</li>
+                        <li>Enter the known dimension</li>
+                        <li>Draw more lines to measure other parts of the image</li>
+                    </ol>
+                    <p></p>
+                </div>
+                <div>
+                    <a href="javascript:void(0);" onclick="ToggleInstructions()">Detailed instructions</a>
+                    <div id="instructions" style="display: none;">
+                        <ol>
+                            <li><input class=loadbutton type=button value="Open ..."> or drag&drop an image anywhere
+                                onto
+                                this page. The picture will be scaled to fit the page width.</li>
+                            <li>Expand the editor area for a larger view</li>
+                            <li>Rotate the image as needed (<span style=color:orange>Limitation:</span> measurement
+                                lines
+                                can't be rotated with the image)</li>
+                            <li>Create the reference dimension (red) by click-and-dragging the first measurement line
+                                onto
+                                an object with known size.</li>
+                            <li>Enter the real-world length of the first dimension as reference - the other measurements
+                                will be scaled accordingly.</li>
+                            <li>Create measurement lines (green) by click-and-dragging (remove them by clicking on the
+                                'remove' link in the measurement table below).</li>
+                            <li>Save the annotated image and the measurement data via the respective buttons or
+                                right-click
+                                the image and "Save Image As ..."</li>
+                        </ol>
+                        <p>Further tips for using the tool:</p>
+                        <ul>
+                            <li>Drag an endpoint to adjust a line</li>
+                            <li>Hit (or click) <kbd data-key=Delete>DEL</kbd> to remove the last measurement</li>
+                            <li>Use the measurements table to remove any measurement</li>
+                            <li>Press (or click) <kbd data-key=Escape>ESC</kbd> to abort drawing the current line or
+                                clear
+                                all measurements. Hit it twice within 1 second to clear the image.</li>
+                            <li>Hold (or click to toggle) <kbd data-key=Control>CTRL</kbd> while dragging to "snap"
+                                horizontal/vertical lines</li>
+                            <li>You can enter a unit in the scale, it'll show up in the results (it does not affect the
+                                measurements).</li>
+                            <li>Leave the scale empty if you want to measure pixels (pixel measurements will be off for
+                                scaled images).</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    <script> (() => {
+            
+            "use strict";
+           
+            var e = e => document.getElementById(e);
+
+            function t(e, t, n, i) {
+                return Math.sqrt(Math.pow(e - n, 2) + Math.pow(t - i, 2))
+            }
+
+
+            const i = "";
+            let o = "";
+            var A = ["image/jpeg", "image/pjpeg", "image/png", "image/webp"];
+
+            function a(e) {
+                for (var t = 0; t < A.length; t++)
+                    if (e.type === A[t]) return !0;
+                return !1
+            }
+            var r = document.getElementsByClassName("loadbutton");
+            for (const e of r) e.addEventListener("click", l);
+
+            function l() {
+                var e = document.createElement("input");
+                e.type = "file", e.accept = ".jpg, .jpeg, .png", e.addEventListener("change", (function () {
+                    var t = e.files;
+                    if (0 === t.length);
+                    else
+                        for (var n = 0; n < t.length; n++)
+                            if (a(t[n])) {
+                                o = t[n].name, window.pmimg.src = window.URL.createObjectURL(t[n]);
+                                break
+                            }
+                })), e.click()
+            }
+            document.body.ondragover = function (e) {
+                e.preventDefault()
+            }, document.body.ondrop = function (e) {
+                if (e.stopPropagation(), e.preventDefault(), e.dataTransfer.files.length) {
+                    for (var t, n = e.dataTransfer.files, i = 0; t = n[i]; i++)
+                        if (t.type.match("image.*")) {
+                            var o = new FileReader;
+                            o.onload = function (e) {
+                                window.pmimg.src = e.target.result
+                            }, o.readAsDataURL(t), filename = t.name;
+                            break
+                        }
+                } else {
+                    var A = e.dataTransfer.getData("text");
+                    isURL(A) && (window.pmimg.src = A)
+                }
+            };
+            var d = e("outputcsv"),
+                s = 0;
+            let c = "";
+
+            function u(e) {
+                c = e
+            }
+
+            function h(e = ".png", t = "_measure") {
+                return c.replace(/\.[^/.]+$/, "") + t + ("0" + s).slice(-2) + e
+            }
+
+            function g(e, t) {
+                var n = document.createElement("a");
+                n.href = e, n.setAttribute("download", t);
+                var i = document.createEvent("MouseEvents");
+                return i.initEvent("click", !1, !0), n.dispatchEvent(i), !1
+            }
+            save.addEventListener("click", (function (e) {
+                g(canvas.toDataURL("image/png"), h()), f()
+            })), e("csv_copy").addEventListener("click", (function () {
+                var e;
+                e = outputcsv.textContent, navigator.clipboard ? navigator.clipboard.writeText(e).then((function () { }), (function (e) { })) : function (e) {
+                    var t = document.createElement("textarea");
+                    t.value = e, t.style.top = "0", t.style.left = "0", t.style.position = "fixed", document.body.appendChild(t), t.focus(), t.select();
+                    try {
+                        document.execCommand("copy")
+                    } catch (e) { }
+                    document.body.removeChild(t)
+                }(e)
+            }));
+            var p = e("csv_save");
+
+            function f(e) {
+                void 0 !== e ? s = e : s++, save.value = "Download  '" + h() + "'", p.value = "Save as '" + h(".txt") + "'"
+            }
+            p.addEventListener("click", (function (e) {
+                g("data:," + encodeURIComponent(outputcsv.textContent), h(".txt")), f()
+            }));
+            var m = e("fullscreen");
+            let w = e("toolbar");
+            var y = e("rcw"),
+                v = e("rccw"),
+                b = e("container"),
+                x = e("canvas"),
+                E = e("overlay");
+            let T = e("loadbar"),
+                k = e("infobar");
+            var C, L = e("info"),
+                M = e("ref"),
+                W = e("save"),
+                j = (e("output"), e("measurements")),
+                D = x.getContext("2d", {
+                    willReadFrequently: !0
+                }),
+                N = 1,
+                V = "";
+            class H {
+                constructor(e, t) {
+                    this.x = e, this.y = t
+                }
+            }
+            class Q {
+                constructor(e) {
+                    this.points = e;
+                    for (const t of e) t.parent = this
+                }
+                length() {
+                    return Math.sqrt(Math.pow((this.points[0].x - this.points[1].x) * x.width, 2) + Math.pow((this.points[0].y - this.points[1].y) * x.height, 2))
+                }
+            }
+            var G = [],
+                R = !1,
+                I = 0,
+                q = 0,
+                B = 1,
+                P = "";
+
+            function Y() {
+                let t = e("canvas"),
+                    n = window.getComputedStyle(t.parentNode, null);
+                t.width = Math.floor(parseInt(n.getPropertyValue("width"))), t.height = Math.floor(parseInt(n.getPropertyValue("height")))
+            }
+
+            function J() {
+                ce(),
+                    function (e, t, n) {
+                        let i = 0,
+                            o = 0;
+                        if (!e.length) return void (output.innerHTML = "No measurements yet.");
+                        o = 1 / e[0].length() * t, output.innerHTML = "";
+                        for (var A = document.createElement("table"), a = e.length, r = 0; r < a; r++) {
+                            var l, d = A.insertRow(),
+                                s = d.insertCell();
+                            s.appendChild(document.createTextNode(r + 1)), o ? l = e[r].length() * o : (l = e[r].length(), n = " px"), r && (i += l), (s = d.insertCell()).appendChild(document.createTextNode(l.toFixed(2) + n)), s.style.textAlign = "right", s = d.insertCell();
+                            var c = document.createElement("a"),
+                                u = document.createTextNode("remove");
+                            c.appendChild(u), c.href = "", c.onclick = function (t) {
+                                return function () {
+                                    return e.splice(t, 1), e.length || (measurements.style.display = "none"), J(), !1
+                                }
+                            }(r), s.appendChild(c)
+                        }
+                        let h = A.insertRow(),
+                            g = h.insertCell(),
+                            p = document.createElement("span");
+                        p.setAttribute("title", "Sigma - the sum of all measured distances (except for the reference dimension)");
+                        let f = document.createTextNode("Σ");
+                        p.appendChild(f), g.appendChild(p);
+                        let m = h.insertCell();
+                        m.appendChild(document.createTextNode(i.toFixed(2) + n)), m.style.textAlign = "right", h.insertCell();
+                        var w = A.createTHead().insertRow(),
+                            y = document.createTextNode("#"),
+                            v = document.createElement("th");
+                        v.appendChild(y), w.appendChild(v), y = document.createTextNode("length"), (v = document.createElement("th")).appendChild(y), w.appendChild(v), y = document.createTextNode("-"), (v = document.createElement("th")).appendChild(y), w.appendChild(v), output.appendChild(A)
+                    }(G, N, V),
+                    function (e, t, n) {
+                        let i = 0,
+                            o = 0;
+                        if (d.innerHTML = "", e.length) {
+                            o = 1 / e[0].length() * t;
+                            for (var A = e.length, a = 0; a < A; a++) {
+                                var r;
+                                d.innerHTML += a + 1 + "\t", o ? r = e[a].length() * o : (r = e[a].length(), n = " px"), d.innerHTML += r.toFixed(2) + n + "\r\n", a && (i += r)
+                            }
+                            d.innerHTML += "Σ\t" + i.toFixed(2) + n + "\r\n"
+                        } else d.innerHTML = "No measurements yet."
+                    }(G, N, V)
+            }
+
+            function z(e, t, n) {
+               // L.textContent = "x=" + e + " y=" + t + " " + n
+            }
+            u(P), window.pmimg = new Image, window.pmimg.crossOrigin = "anonymous", window.pmimg.referrerPolicy = "no-referrer", window.pmimg.onload = function () {
+                window.pmimg.height / window.pmimg.width, Y(), window.pmimg.src !== i && (ne(), T.style.visibility = "hidden", k.style.opacity = 1), G = [], D.lineWidth = 3, J(), y.removeAttribute("disabled"), v.removeAttribute("disabled"), u(P), f(0), W.disabled = "", 
+                // e("filename").innerHTML = P,
+                 s = 0
+            }, window.pmimg.onerror = function (e) {
+                if ("" == window.pmimg.currentSrc) return !1;
+                ie(), T.style.visibility = "visible", k.style.opacity = 0, alert("Sorry, this image could not be loaded directly*.\nPlease try copy-paste instead.\n\n*probably due to security measures of the browser and/or server. Also, you can't drop local image files from another browser tab.", e)
+            }, window.pmimg.src = i, M.addEventListener("input", (function (e) {
+                var t = e.target.value.match(/(\d+(,|\.)?\d*)(\D*)/),
+                    n = "";
+                V = "", null == t || (n = t[1], V = t[3]), N = parseFloat(n.replace(",", ".")), J()
+            }));
+            let K, U = !1,
+                F = e("expand");
+
+            function X() {
+                if (U = !U, U) F.innerHTML = 'reduce <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minimize-2"><polyline points="4 14 10 14 10 20"></polyline><polyline points="20 10 14 10 14 4"></polyline><line x1="14" y1="10" x2="21" y2="3"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>', K = {
+                    c: b.style,
+                    f: m.style
+                }, m.style = "position:absolute; top:0; left:0;           z-index:5;           width:100%; height:100%;           padding:0; margin:0;           background-color:rgba(0,0,0,0.5);", b.style = "position:absolute; top:5%; left:5%;           width:90%; height:90%;", Y(), J(), m.addEventListener("click", X);
+                else {
+                    F.innerHTML = 'expand <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-maximize-2"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>', b.style = K.c, m.style = K.f;
+                    let e = window.getComputedStyle(x.parentNode, null);
+                    x.width = parseInt(e.getPropertyValue("width")), x.parentNode.height = parseInt(e.getPropertyValue("height")) + 1, x.height = x.parentNode.height, J(), m.removeEventListener("click", X)
+                }
+            }
+            F.addEventListener("click", (e => {
+                e.stopPropagation(), X()
+            })), b.addEventListener("click", (e => {
+                e.stopPropagation()
+            }));
+            var Z = 0;
+            y.addEventListener("click", (function (e) {
+                Z += 90, ce()
+            })), v.addEventListener("click", (function (e) {
+                Z -= 90, ce()
+            }));
+            var O = !1;
+            window.addEventListener("keydown", (function (e) {
+                e.repeat || "Control" != e.key || (O = !0)
+            })), window.addEventListener("keyup", (function (e) {
+                e.repeat || "Control" != e.key || (O = !1)
+            }));
+            let S = document.getElementsByTagName("kbd");
+            var _, $ = !1;
+            for (let e of S) {
+                let t = e.dataset.key;
+                e.onclick = function () {
+                    let n;
+                    if ("Control" == t) !0 === $ ? (n = new KeyboardEvent("keyup", {
+                        bubbles: !0,
+                        cancelable: !0,
+                        key: "Control",
+                        ctrlKey: !0
+                    }), $ = !1, e.removeAttribute("class")) : (n = new KeyboardEvent("keydown", {
+                        bubbles: !0,
+                        cancelable: !0,
+                        key: "Control",
+                        ctrlKey: !0
+                    }), $ = !0, e.setAttribute("class", "pressed"));
+                    else if ("Delete" == t) n = new KeyboardEvent("keydown", {
+                        bubbles: !0,
+                        cancelable: !0,
+                        key: "Delete",
+                        ctrlKey: !1
+                    });
+                    else {
+                        if ("Escape" != t) return;
+                        n = new KeyboardEvent("keydown", {
+                            bubbles: !0,
+                            cancelable: !0,
+                            key: "Escape",
+                            ctrlKey: !1
+                        })
+                    }
+                    document.dispatchEvent(n)
+                }
+            }
+            x.addEventListener("wheel", (function (e) {
+                e.stopPropagation(), e.preventDefault()
+            }));
+            var ee = !1;
+
+            function te(e) {
+                _ = void 0, ee = !0, e.preventDefault(), e.stopPropagation(), window.navigator.vibrate([50]), ae(e.changedTouches[0].clientX, e.changedTouches[0].clientY)
+            }
+
+            function ne() {
+                E.style.display = "none", w.style.opacity = 1
+            }
+
+            function ie() {
+                G.length || window.pmimg.src && window.pmimg.src != document.location && window.pmimg.src !== i || (E.style.display = "flex", w.style.opacity = 0, k.style.opacity = 0)
+            }
+            x.addEventListener("touchstart", (function (e) {
+                _ = window.setTimeout(te, 500, e)
+            })), x.addEventListener("touchmove", (function (e) {
+                _ ? window.clearTimeout(_) : ee && (e.preventDefault(), e.stopPropagation(), re(e.changedTouches[0].clientX, e.changedTouches[0].clientY))
+            })), x.addEventListener("touchend", (function (e) {
+                _ ? window.clearTimeout(_) : ee && (e.preventDefault(), ee = !1, le(e.changedTouches[0].clientX, e.changedTouches[0].clientY))
+            })), x.addEventListener("touchcancel", (function (e) {
+                _ ? window.clearTimeout(_) : ee && (ee = !1)
+            })), b.addEventListener("mouseover", ne), b.addEventListener("mouseout", ie), x.addEventListener("click", (function (e) {
+                0 == window.pmimg.naturalWidth && 0 == G.length && open_image()
+            }));
+            var oe = !1;
+
+            function Ae(e, t) {
+                return C = t.getBoundingClientRect(), {
+                    x: (e.clientX - C.left) / t.width,
+                    y: (e.clientY - C.top) / t.height
+                }
+            }
+
+            function ae(e, t) {
+                R = !0;
+                var n = x.getBoundingClientRect();
+                I = (e - n.left) / n.width, q = (t - n.top) / n.height
+            }
+
+            function re(e, t) {
+                var n = x.getBoundingClientRect(),
+                    i = (e - n.left) / n.width,
+                    o = (t - n.top) / n.height;
+                ce(), G.length ? D.strokeStyle = "rgba(0, 255, 0, 1)" : D.strokeStyle = "rgba(255, 0, 0, 1)", D.lineWidth = 1, D.beginPath(), D.moveTo(I * n.width, q * n.height), O && (Math.abs(I * n.width - i * n.width) <= 10 ? i = I : Math.abs(q * n.height - o * n.height) <= 10 && (o = q)), D.lineTo(i * n.width, o * n.height), D.stroke()
+            }
+
+            function le(e, t) {
+                R = !1;
+                var n = x.getBoundingClientRect(),
+                    i = (e - n.left) / n.width,
+                    o = (t - n.top) / n.height;
+                I == i && q == o || (O && (Math.abs(I * n.width - i * n.width) <= 10 ? i = I : Math.abs(q * n.height - o * n.height) <= 10 && (o = q)), G.push(new Q([new H(I, q), new H(i, o)])), J(), j.style.display = "initial")
+            }
+            x.addEventListener("mousedown", (function (e) {
+                if (1 != e.button && R) return e.stopPropagation(), e.preventDefault(), !1;
+                if (e.button, 0 != e.button) return !1;
+                e.stopPropagation(), e.preventDefault(), x.oncontextmenu = function () {
+                    return !1
+                };
+                let n = Ae(e, x),
+                    i = function (e, n) {
+                        for (const i of G)
+                            for (const o of i.points)
+                                if (t(e, n, o.x, o.y) < 5 / C.width) return o;
+                        return !1
+                    }(n.x, n.y);
+                i ? (oe = i, x.style.cursor = "grabbing") : ae(e.clientX, e.clientY)
+            })), x.addEventListener("mousemove", (function (e) {
+                if (R) e.stopPropagation(), e.preventDefault(), re(e.clientX, e.clientY);
+                else if (oe) {
+                    let t = Ae(e, x);
+                    oe.x = t.x, oe.y = t.y, ce()
+                } else {
+                    C = x.getBoundingClientRect();
+                    var n = e.clientX - C.left,
+                        i = e.clientY - C.top,
+                        o = D.getImageData(n, i, 1, 1).data,
+                        A = "rgba(" + o[0] + "," + o[1] + "," + o[2] + "," + o[3] + ")";
+                    z(n.toFixed(), i.toFixed(), A);
+                    let a = n / C.width,
+                        r = i / C.height;
+                    for (const e of G) {
+                        let n = !1;
+                        for (const i of e.points) {
+                            if (t(a, r, i.x, i.y) < 5 / C.width) {
+                                x.style.cursor = "grab", i.highlight = !0, n = !0;
+                                break
+                            }
+                            if (1 == i.highlight) {
+                                x.style.cursor = "crosshair", i.highlight = !1, n = !0;
+                                break
+                            }
+                        }
+                        if (n) {
+                            ce();
+                            break
+                        }
+                    }
+                }
+            })), x.addEventListener("mouseup", (function (e) {
+                return 0 == e.button && !(!R && !oe) && (e.stopPropagation(), e.preventDefault(), x.oncontextmenu = null, void (R ? le(e.clientX, e.clientY) : oe && (x.style.cursor = "grab", oe = !1, J())))
+            })), x.addEventListener("mouseout", (function (e) {
+                e.stopPropagation(), e.preventDefault(), z("-", "-", "-")
+            }));
+            var de, se = 0;
+
+            function ce() {
+                if (0 === window.pmimg.naturalWidth) D.clearRect(0, 0, D.canvas.width, D.canvas.height);
+                else {
+                    parseInt(window.getComputedStyle(x.parentNode, null).getPropertyValue("width")), x.parentNode.offsetWidth, (Z %= 360) < 0 && (Z += 360);
+                    var e = Z * Math.PI / 180,
+                        t = Math.abs(Math.sin(e)),
+                        n = Math.abs(Math.cos(e)),
+                        i = n * window.pmimg.width + t * window.pmimg.height,
+                        o = t * window.pmimg.width + n * window.pmimg.height,
+                        A = x.width / i,
+                        a = i / o;
+                    x.height = x.width / a, D.save(), D.setTransform(A, 0, 0, A, x.width / 2, x.height / 2), D.rotate(e), D.drawImage(window.pmimg, -window.pmimg.width / 2, -window.pmimg.height / 2), D.restore()
+                }
+                G.length && (B = 1 / G[0].length() * N), D.lineWidth = 1;
+                for (var r = 0; r < G.length; r++) {
+                    var l;
+                    D.strokeStyle = r ? "rgba(0, 255, 0, 1)" : "rgba(255, 0, 0, 1)", D.beginPath(), D.moveTo(G[r].points[0].x * x.width, G[r].points[0].y * x.height), D.lineTo(G[r].points[1].x * x.width, G[r].points[1].y * x.height), D.stroke(), B ? l = G[r].length() * B : (l = G[r].length(), V = " px");
+                    var d = r + 1 + "=" + l.toFixed(2) + V;
+                    D.font = "20px sans-serif", D.textAlign = "center", D.textBaseline = "middle";
+                    let e = Math.min(G[r].points[0].x, G[r].points[1].x) * x.width + Math.abs((G[r].points[0].x - G[r].points[1].x) * x.width) / 2,
+                        t = Math.min(G[r].points[0].y, G[r].points[1].y) * x.height + Math.abs((G[r].points[0].y - G[r].points[1].y) * x.height) / 2;
+                    if (D.strokeStyle = "rgba(255, 255, 255, 0.9)", D.lineWidth = 3, D.strokeText(d, e, t), D.fillStyle = "rgba(0, 0, 0, 1)", D.fillText(d, e, t), G[r].points[0].highlight) {
+                        let e = G[r].points[0].x * x.width,
+                            t = G[r].points[0].y * x.height;
+                        D.beginPath(), D.arc(e, t, 5, 0, 2 * Math.PI, !1), D.fillStyle = "red", D.fill()
+                    }
+                }
+            }
+            window.addEventListener("keydown", (function (t) {
+                t.repeat || "Escape" != t.key || (0 == se ? R || (se = 1, G = [], j.style.display = "none", de = window.setTimeout((function () {
+                    se = 0
+                }), 1e3)) : 1 == se && (se = 0, window.pmimg.src = i, 
+                // e("filename").innerHTML = "", Y(), 
+                ie(), T.style.visibility = "visible", k.style.opacity = 0, j.style.display = "none", window.clearTimeout(de), y.setAttribute("disabled", ""), v.setAttribute("disabled", ""), W.setAttribute("disabled", ""), u(P = ""), f(0)), J(), R = !1, I = 0, q = 0)
+            })), window.addEventListener("keydown", (function (e) {
+                e.repeat || "Delete" != e.key || document.activeElement == M || (R || G.pop(), G.length || (j.style.display = "none"), J(), R = !1, I = 0, q = 0)
+            }))
+        })() </script>
+    <script>
+
+        class TerminusMessage {
+            source = "terminus-photomeasure"
+            constructor(data, type) {
+                this.data = data
+                this.type = type
+            }
+        }
+
+        window.addEventListener("message", (event) => {
+            if (event.data && event.data.type && event.data.type == "setimage") {
+                o = "input.jpg", window.pmimg.src = event.data.data;
+            }
+            if (event.data && event.data.type && event.data.type == "getimage") {
+                const image = canvas.toDataURL("image/jpeg");
+                if (image) {
+                    const message = new TerminusMessage(image, "photomeasureoutput");
+                    console.log("emitting image out")
+                    window.parent.postMessage(message, "*");
+                }
+            }
+        })
+
+        // const message = new TerminusMessage("", "loadcomplete");
+        // window.parent.postMessage(message, "*")
+
+    </script>
+</body>
+
+</html>

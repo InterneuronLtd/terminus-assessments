@@ -1,0 +1,14 @@
+
+
+-- for old value copy guid from live and for new create new guid so it can also work for old forms
+
+insert into entitystorematerialised.meta_stairs (stairs_id,text) values('0c28b3ec-34ae-4fec-a2cc-49caee5f6ec0','Straight Stairs');
+insert into entitystorematerialised.meta_stairs(stairs_id,text) values(gen_random_uuid(),'L Shaped Stairs');
+insert into entitystorematerialised.meta_stairs(stairs_id,text) values('38b97171-f60c-4ed5-9c04-ec06e3796687','Fanned');
+insert into entitystorematerialised.meta_stairs(stairs_id,text) values(gen_random_uuid(),'U Shaped Stairs');
+insert into entitystorematerialised.meta_stairs(stairs_id,text) values(gen_random_uuid(),'Winder Stairs');
+insert into entitystorematerialised.meta_stairs(stairs_id,text) values(gen_random_uuid(),'Spiral Stairs');
+insert into entitystorematerialised.meta_stairs(stairs_id,text) values('109b0c86-234b-4506-b622-a3c044efa975','Curved Stairs');
+insert into entitystorematerialised.meta_stairs(stairs_id,text) values(gen_random_uuid(),'Cantilever Stairs');
+insert into entitystorematerialised.meta_stairs(stairs_id,text) values('dfa7836d-77eb-48b6-b05c-5684cc97dfb0','Split Staircase (Bifurcated)');
+insert into entitystorematerialised.meta_stairs(stairs_id,text) values('9e95a5d1-2c76-4d26-a0d2-a4504363a333','Other');

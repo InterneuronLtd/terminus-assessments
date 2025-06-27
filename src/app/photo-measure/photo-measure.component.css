@@ -1,0 +1,7 @@
+.photomeasure {
+    top: 150px;
+    width: 100% !important;
+    min-width: 300px !important;
+    min-height: 1080px !important;
+    overflow-y: scroll; 
+  }

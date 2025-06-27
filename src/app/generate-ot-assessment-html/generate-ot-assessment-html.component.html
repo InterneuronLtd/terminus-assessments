@@ -1,0 +1,395 @@
+<!--BEGIN LICENSE BLOCK--> 
+<!--Interneuron Terminus
+
+Copyright(C) 2025  Interneuron Limited
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.If not, see<http://www.gnu.org/licenses/>. -->
+<!--END LICENSE BLOCK--> 
+<ng-template #printOTAssessmentForm>
+    <table style="border: 0; width: 100%;">
+        <tr style="border: 0;">
+            <td style="border: 0;">
+                <img src="{{disabledLivingLogo}}" width="150px" />
+            </td>
+            <td style="border: 0;text-align: right;">
+                <img src="{{hilightLogo}}" width="150px" />
+                <label>Occupational Therapy Assessment</label>
+            </td>
+        </tr>
+    </table>
+
+    <div class="row" style=" margin-bottom:10px !important;">
+        <div class="col-md-10" style=" margin-left:15px !important;">
+        </div>
+    </div>
+
+    <div *ngIf="assessorInformation && assessorInformation.length > 0">
+        <div class="row">
+            <div class="col-md-10 labelHeading">
+                <h6 class="text-secondary">Assessor Information</h6>
+                 
+            </div>
+        </div>
+        <div class="col-md-10">
+            <table style="width: 100%;" class="border-table">
+                <div>
+                    <div>
+                        <ng-container *ngFor="let component9 of assessorInformation; let i = index">
+                            <tr *ngIf="component9.componentSubSection != ''">
+                                <td colspan="2" style=" padding-left: 7px; font-size: 0.9em; border-color: #96D4D4; ">
+                                    <b>{{component9.componentSubSection}}</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border border-right-bottom"
+                                    style="width: 40%; padding-left: 7px; font-size: 0.9em; border-color: #96D4D4; ">
+                                    <span>{{component9.componentLabel}}</span>
+                                </td>
+                                <td *ngIf="component9.componentType =='file'">
+                                    <img src="{{component9.componentValue}}" width="200px" />
+                                </td>
+                                <td *ngIf="component9.componentType !='file'" class="border border-bottom"
+                                    style="width: 60%; padding-left: 7px; font-size: 0.9em; border-color: #96D4D4;  word-wrap: break-word;">
+                                    <span>{{component9.componentValue}}</span>
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </div>
+                  
+                  
+                </div>
+
+
+            </table>
+        </div>
+        <br><br>
+    </div>
+    <div *ngIf="personalInformation && personalInformation.length > 0">
+        <div class="row">
+            <div class="col-md-10 labelHeading">
+                <h6 class="text-secondary">Personal Information</h6>
+                 
+            </div>
+        </div>
+        <div class="col-md-10">
+            <table style="width: 100%;" class="border-table">
+                <div>
+                    <div>
+                        <ng-container *ngFor="let component1 of personalInformation; let i = index">
+                            <tr *ngIf="component1.componentSubSection != ''">
+                                <td colspan="2" style=" padding-left: 7px; font-size: 0.9em; border-color: #96D4D4; ">
+                                    <b>{{component1.componentSubSection}}</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border border-right-bottom"
+                                    style="width: 40%; padding-left: 7px; font-size: 0.9em; border-color: #96D4D4; ">
+                                    <span>{{component1.componentLabel}}</span>
+                                </td>
+                                <td *ngIf="component1.componentType =='file'">
+                                    <img src="{{component1.componentValue}}" width="200px" />
+                                </td>
+                                <td *ngIf="component1.componentType !='file'" class="border border-bottom"
+                                    style="width: 60%; padding-left: 7px; font-size: 0.9em; border-color: #96D4D4;  word-wrap: break-word;">
+                                    <span>{{component1.componentValue}}</span>
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </div>
+                  
+                  
+                </div>
+
+
+            </table>
+        </div>
+        <br><br>
+    </div>
+   
+    <div *ngIf="careTeam && careTeam.length > 0">
+        <div class="row">
+            <div class="col-md-10 labelHeading">
+                <h6 class="text-secondary">Care Team</h6>
+                 
+            </div>
+        </div>
+        <div class="col-md-10">
+            <table style="width: 100%;" class="border-table">
+                <div>
+                    <ng-container *ngFor="let component2 of careTeam; let i = index">
+                        <tr *ngIf="component2.componentSubSection != ''">
+                            <td colspan="2" style=" padding-left: 7px; font-size: 0.9em; border-color: #96D4D4; ">
+                                <b>{{component2.componentSubSection}}</b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="border border-right-bottom"
+                                style="width: 40%; padding-left: 7px; font-size: 0.9em; border-color: #96D4D4; ">
+                                <span>{{component2.componentLabel}}</span>
+                            </td>
+                            <td *ngIf="component2.componentType =='file'">
+                                <img src="{{component2.componentValue}}" width="200px" />
+                            </td>
+                            <td *ngIf="component2.componentType !='file'" class="border border-bottom"
+                                style="width: 60%; padding-left: 7px; font-size: 0.9em; border-color: #96D4D4;  word-wrap: break-word;">
+                                <span>{{component2.componentValue}}</span>
+                            </td>
+                        </tr>
+                    </ng-container>
+                </div>
+               
+
+            </table>
+        </div>
+        <br><br>
+    </div>
+    <!-- ////// My Section -->
+    
+
+
+    <div *ngIf="clinicalInformation && clinicalInformation.length > 0">
+        <div class="row">
+            <div class="col-md-10 labelHeading">
+                <h6 class="text-secondary">Clinical Information</h6>
+                 
+            </div>
+        </div>
+        <div class="col-md-10">
+            <table style="width: 100%;" class="border-table">
+                <div>
+                    <div>
+                        <ng-container *ngFor="let component3 of clinicalInformation; let i = index">
+                            <tr *ngIf="component3.componentSubSection != ''">
+                                <td colspan="2" style=" padding-left: 7px; font-size: 0.9em; border-color: #96D4D4; ">
+                                    <b>{{component3.componentSubSection}}</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border border-right-bottom"
+                                    style="width: 40%; padding-left: 7px; font-size: 0.9em; border-color: #96D4D4; ">
+                                    <span>{{component3.componentLabel}}</span>
+                                </td>
+                                <td *ngIf="component3.componentType =='file'">
+                                    <img src="{{component3.componentValue}}" width="200px" />
+                                </td>
+                                <td *ngIf="component3.componentType !='file'" class="border border-bottom"
+                                    style="width: 60%; padding-left: 7px; font-size: 0.9em; border-color: #96D4D4;  word-wrap: break-word;">
+                                    <span>{{component3.componentValue}}</span>
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </div>
+                    <!-- <tr *ngIf="subSection != ''">
+                        <td colspan="2" style=" padding-left: 7px; font-size: 0.9em; border-color: #96D4D4; ">
+                            <b>{{subSection}}</b>
+                        </td>
+                      
+                    </tr> -->
+                    <!-- <div *ngIf="subSection == 'Current prescribed  medication' && clinicalInformationSubSection1">
+                        <ng-container *ngFor="let component3 of clinicalInformationSubSection1; let i = index">
+                            <tr>
+                                
+                                <td  class="border border-right-bottom" style="width: 40%; padding-left: 7px; font-size: 0.9em; border-color: #96D4D4; ">
+                                    <span>{{component3.componentLabel}}</span>
+                                </td>
+                                <td   *ngIf="component3.componentType =='file'">
+                                    <img src="{{component3.componentValue}}" width="200px"/>
+                                </td>
+                                <td  *ngIf="component3.componentType !='file'" class="border border-bottom" style="width: 60%; padding-left: 7px; font-size: 0.9em; border-color: #96D4D4;  word-wrap: break-word;">
+                                    <span>{{component3.componentValue}}</span>
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </div>
+                    <div *ngIf="subSection == 'Current over the counter medication' && clinicalInformationSubSection2">
+                        <ng-container *ngFor="let component3 of clinicalInformationSubSection2; let i = index">
+                            <tr>
+                                <td  class="border border-right-bottom" style="width: 40%; padding-left: 7px; font-size: 0.9em; border-color: #96D4D4; ">
+                                    <span>{{component3.componentLabel}}</span>
+                                </td>
+                                <td   *ngIf="component3.componentType =='file'">
+                                    <img src="{{component3.componentValue}}" width="200px"/>
+                                </td>
+                               
+                                <td *ngIf="component3.componentType !='file'" class="border border-bottom" style="width: 60%; padding-left: 7px; font-size: 0.9em; border-color: #96D4D4;  word-wrap: break-word;">
+                                    <span>{{component3.componentValue}}</span>
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </div> -->
+                </div>
+
+
+            </table>
+        </div>
+        <br><br>
+    </div>
+ 
+    <div *ngIf="assessmentOfNeed && assessmentOfNeed.length > 0">
+        <div class="row">
+            <div class="col-md-10 labelHeading">
+                <h6 class="text-secondary">Assessment Of Need</h6>
+                 
+            </div>
+        </div>
+        <div class="col-md-10">
+            <table style="width: 100%;" class="border-table">
+                <ng-container *ngFor="let component4 of assessmentOfNeed">
+                    <tr>
+                        <td class="border border-right-bottom" style="width: 40%; padding-left: 7px; font-size: 0.9em; border-color: #96D4D4; ">
+                            <span>{{component4.componentLabel}}</span>
+                        </td>
+                        <td *ngIf="component4.componentType =='file'">
+                            <img src="{{component4.componentValue}}" width="200px" />
+                        </td>
+                        <td *ngIf="component4.componentType !='file'" class="border border-bottom"
+                            style="width: 60%; padding-left: 7px; font-size: 0.9em; border-color: #96D4D4;  word-wrap: break-word;">
+                            <span>{{component4.componentValue}}</span>
+                        </td>
+                    </tr>
+                </ng-container>
+
+            </table>
+        </div>
+        <br><br>
+    </div>
+   
+    <div *ngIf="mobility && mobility.length > 0">
+        <div class="row">
+            <div class="col-md-10 labelHeading">
+                <h6 class="text-secondary">Mobility</h6>
+                 
+            </div>
+        </div>
+        <div class="col-md-10">
+            <table style="width: 100%;" class="border-table">
+                <ng-container *ngFor="let component5 of mobility">
+                    <tr>
+                        <td class="border border-right-bottom" style="width: 40%; padding-left: 7px; font-size: 0.9em; border-color: #96D4D4; ">
+                            <span>{{component5.componentLabel}}</span>
+                        </td>
+                        <td *ngIf="component5.componentType =='file'">
+                            <img src="{{component5.componentValue}}" width="200px" />
+                        </td>
+                        <td *ngIf="component5.componentType !='file'" class="border border-bottom"
+                            style="width: 60%; padding-left: 7px; font-size: 0.9em; border-color: #96D4D4;  word-wrap: break-word;">
+                            <span>{{component5.componentValue}}</span>
+                        </td>
+                    </tr>
+                </ng-container>
+
+            </table>
+        </div>
+        <br><br>
+    </div>
+    
+    <div *ngIf="propertyDetails && propertyDetails.length > 0">
+        <div class="row">
+            <div class="col-md-10 labelHeading">
+                <h6 class="text-secondary">Property Details</h6>
+                 
+            </div>
+        </div>
+        <div class="col-md-10">
+            <table style="width: 100%;" class="border-table">
+                <div>
+                    <div>
+                        <ng-container *ngFor="let component6 of propertyDetails; let i = index">
+                            <tr *ngIf="component6.componentSubSection != ''">
+                                <td colspan="2" style=" padding-left: 7px; font-size: 1.0em; border-color: #96D4D4; ">
+                                    <b>{{component6.componentSubSection}}</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border border-right-bottom"
+                                    style="width: 40%; padding-left: 7px; font-size: 0.9em; border-color: #96D4D4; ">
+                                    <span>{{component6.componentLabel}}</span>
+                                </td>
+                                <td *ngIf="component6.componentType =='file'">
+                                    <img src="{{component6.componentValue}}" width="200px" />
+                                </td>
+                                <td *ngIf="component6.componentType !='file'" class="border border-bottom"
+                                    style="width: 60%; padding-left: 7px; font-size: 0.9em; border-color: #96D4D4;  word-wrap: break-word;">
+                                    <span>{{component6.componentValue}}</span>
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </div>
+                
+                </div>
+
+
+            </table>
+        </div>
+        <br><br>
+    </div>
+   
+    <div *ngIf="summary && summary.length > 0">
+        <div class="row">
+            <div class="col-md-10 labelHeading">
+                <h6 class="text-secondary">Summary</h6>
+                 
+            </div>
+        </div>
+        <div class="col-md-10">
+            <table style="width: 100%;" class="border-table">
+                <ng-container *ngFor="let component7 of summary">
+                    <tr>
+                        <td class="border border-right-bottom" style="width: 40%; padding-left: 7px; font-size: 0.9em; border-color: #96D4D4; ">
+                            <span>{{component7.componentLabel}}</span>
+                        </td>
+                        <td class="border border-bottom"
+                            style="width: 60%; padding-left: 7px; font-size: 0.9em; border-color: #96D4D4;  word-wrap: break-word;">
+                            <div [innerHtml]="component7.componentValue"></div>
+                        </td>
+                    </tr>
+                </ng-container>
+
+            </table>
+        </div>
+    <br><br>
+    </div>
+    <div *ngIf="reccomendations && reccomendations.length > 0">
+        <div class="row">
+            <div class="col-md-10 labelHeading">
+                <h6 class="text-secondary">Recommendations</h6>
+                 
+            </div>
+        </div>
+        <div class="col-md-10">
+            <table style="width: 100%;" class="border-table">
+                <ng-container *ngFor="let component8 of reccomendations">
+                    <tr>
+                        <td class="border border-right-bottom" style="width: 40%; padding-left: 7px; font-size: 0.9em; border-color: #96D4D4; ">
+                            <span>{{component8.componentLabel}}</span>
+                        </td>
+                        <td class="border border-bottom"
+                            style="width: 60%; padding-left: 7px; font-size: 0.9em; border-color: #96D4D4;  word-wrap: break-word;">
+                            <span>{{component8.componentValue}}</span>
+                        </td>
+                    </tr>
+                </ng-container>
+
+            </table>
+        </div>
+    </div>
+
+
+</ng-template>
+
+<app-print-ot-assessment [customTemplate]="printOTAssessmentForm" (destroyComponent)="pdfDownloaded()"
+    [dimensions]="[842, 595]">
+</app-print-ot-assessment>
